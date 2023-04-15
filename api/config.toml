@@ -1,0 +1,14 @@
+# ZRPS (ZombsRoyale Private Server) API Config File
+
+# Database Connection Information
+[database]
+host = "localhost"
+port = 3306
+user = "root"
+password = ""
+database_name = "zrps"
+
+# Server Settings
+[server]
+name = "Example ZRPS"
+port = 3001
