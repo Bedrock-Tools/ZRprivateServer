@@ -1,7 +1,7 @@
 export const prefix = '/api';
 
-async function routes(fastify) {
-    fastify.get('/', async () => {
+async function routes(app) {
+    app.get('/', () => {
         return { status: 'success' };
     });
 }

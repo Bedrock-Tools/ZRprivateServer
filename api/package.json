@@ -18,8 +18,17 @@
   },
   "homepage": "https://github.com/JamzOhJamz/ZRprivateServer#readme",
   "dependencies": {
+    "@fastify/cookie": "^8.3.0",
+    "@fastify/cors": "^8.2.1",
+    "@fastify/formbody": "^7.4.0",
     "@fastify/mysql": "^4.1.0",
+    "@fastify/static": "^6.10.1",
+    "@fastify/view": "^7.4.1",
+    "bcryptjs": "^2.4.3",
     "fastify": "^4.15.0",
+    "hcaptcha": "^0.1.1",
+    "node-fetch": "^3.3.1",
+    "pug": "^3.0.2",
     "toml": "^3.0.0"
   },
   "devDependencies": {

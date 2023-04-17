@@ -1,17 +1,27 @@
 // Import core dependencies
 import fastify from 'fastify';
 import mysql from '@fastify/mysql';
-import toml from 'toml';
-import * as url from 'url';
+import cors from '@fastify/cors';
+import cookie from '@fastify/cookie';
+import formbody from '@fastify/formbody';
+import view from '@fastify/view';
+import _static from '@fastify/static';
 import path, { dirname } from 'path';
+import * as url from 'url';
+import toml from 'toml';
+import pug from 'pug';
 import fs from 'fs';
 
-// Load config
+// Load config and directory name
+const __dirname = dirname(url.fileURLToPath(import.meta.url));
 const configFile = fs.readFileSync('config.toml', 'utf8');
 const config = toml.parse(configFile);
 
 // Create web server
 const app = fastify();
+
+// Decorate config
+app.decorate('opts', config);
 
 // Create MySQL pool connection
 app.register(mysql, {
@@ -23,8 +33,19 @@ app.register(mysql, {
     database: config.database.database_name
 });
 
+// Register miscellaneous plugins
+app.register(cors);
+app.register(formbody);
+app.register(cookie, {
+    secret: config.server.cookie_secret || 'my-secret'
+});
+app.register(view, {
+    engine: {
+        pug
+    }
+});
+
 // Register routes
-const __dirname = dirname(url.fileURLToPath(import.meta.url));
 const routesPath = path.join(__dirname, 'routes');
 const routeFiles = fs.readdirSync(routesPath).filter(file => file.endsWith('.js'));
 for (const file of routeFiles) {
@@ -34,6 +55,11 @@ for (const file of routeFiles) {
         app.register(route, { prefix: route.prefix });
     }
 }
+
+// Serve static content
+app.register(_static, {
+    root: path.join(__dirname, 'public')
+});
 
 // Start web server
 app.listen({ port: config.server.port || 3001 }, (err, address) => {

@@ -12,3 +12,6 @@ database_name = "zrps"
 [server]
 name = "Example ZRPS"
 port = 3001
+cookie_secret = "my-secret"
+hcaptcha_site_key = "10000000-ffff-ffff-ffff-000000000001"
+hcaptcha_secret_key = "0x0000000000000000000000000000000000000000"

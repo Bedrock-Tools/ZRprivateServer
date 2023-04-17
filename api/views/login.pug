@@ -1,0 +1,30 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        title= serverName + ' - Login'
+        link(rel="preconnect" href="https://fonts.googleapis.com")
+        link(rel="preconnect" href="https://fonts.gstatic.com", crossorigin)
+        link(href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet")
+        link(rel="stylesheet" href="../../css/style.css")
+    body(style="margin: 0; padding: 0;")
+        div(style="height: 100vh; width: 100vw; display: flex; align-items: center; justify-content: center;")
+            div
+                if message
+                    p #{message}
+                h1 Login to #{serverName}
+                form(action="/user/login" method="POST")
+                    label(for="username") Username
+                    br
+                    input(type="text" name="username" id="username" minlength="1" maxlength="30", required)
+                    br
+                    br
+                    label(for="password") Password
+                    br
+                    input(type="password" name="password" id="password", required)
+                    br
+                    br
+                    button(type="submit" class="button-primary") Login
+                p Don't have an account? 
+                    a(href="/user/register") Register
+        script(src="../../js/login.js")
