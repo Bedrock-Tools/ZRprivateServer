@@ -1,0 +1,36 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        title= serverName + ' - Register'
+        link(rel="preconnect" href="https://fonts.googleapis.com")
+        link(rel="preconnect" href="https://fonts.gstatic.com", crossorigin)
+        link(href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet")
+        link(rel="stylesheet" href="../../css/style.css")
+        script(src="https://js.hcaptcha.com/1/api.js", async, defer)
+    body(style="margin: 0; padding: 0;")
+        div(style="height: 100vh; width: 100vw; display: flex; align-items: center; justify-content: center;")
+            div
+                h1 Register for #{serverName}
+                form(action="/user/register" method="POST")
+                    label(for="username") Username
+                    br
+                    input(type="text" name="username" id="username" minlength="1" maxlength="30", required)
+                    br
+                    br
+                    label(for="password") Password
+                    br
+                    input(type="password" name="password" id="password", required)
+                    br
+                    br
+                    label(for="password2") Repeat Password
+                    br
+                    input(type="password" name="password2" id="password2", required)
+                    br
+                    br
+                    div.h-captcha(data-sitekey="10000000-ffff-ffff-ffff-000000000001")
+                    br
+                    button(type="submit" class="button-primary") Register
+                p Already registered? 
+                    a(href="/user/login") Login
+        script(src="../../js/register.js")

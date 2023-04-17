@@ -1,0 +1,44 @@
+doctype html
+html
+    body
+        script.
+            const messageData = JSON.stringify({
+                event: 'onLoginSuccess',
+                data: {
+                    status: 'success',
+                    user: !{userData},
+                    csrf: '#{csrf}'
+                }
+            });
+
+            const origins = ['http://zombsroyale.io', 'https://zombsroyale.io'];
+
+            let hasSentMessage = false;
+
+            for (let i in origins) {
+                try {
+                    window.opener.postMessage(messageData, origins[i]);
+
+                    hasSentMessage = true;
+                } catch (e) {
+                    console.log('Failed to send to: ' + origins[i]);
+                }
+            }
+
+            if (hasSentMessage) {
+                console.log('Sent to one of the origins successfully!');
+
+                window.close();
+            } else {
+                console.log('Attaching Gateway request as fallback...');
+
+                const gatewayImage = document.createElement('img');
+
+                gatewayImage.style = 'position:absolute;top:-100px;left:-100px;width:1px;height:1px;';
+                gatewayImage.src = 'http://localhost:7163/?userKey=#{session}&csrf=#{csrf}';
+
+                document.body.appendChild(gatewayImage);
+            }
+        div(style="margin:80px;text-align:center;font-family:sans-serif;")
+            strong You have been successfully logged in!
+            p Please close this tab and refresh the game to continue.

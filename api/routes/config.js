@@ -1,12 +1,12 @@
 export const prefix = '/api/config';
 
-async function routes(fastify) {
-    fastify.get('/', async () => {
-        const connection = await fastify.mysql.getConnection();
-        const [rows] = await connection.query(
+async function routes(app) {
+    app.get('/', async () => {
+        const db = await app.mysql.getConnection();
+        const [rows] = await db.query(
             'SELECT `key`, value FROM globals WHERE `key` IN (\'show_announcement\', \'announcement_title\', \'announcement_type\', \'announcement_message\', \'maintenance\')'
         );
-        connection.release();
+        db.release();
         const globals = rows.reduce((acc, item) => {
             acc[item.key] = item.value;
             return acc;

@@ -1,7 +1,7 @@
 export const prefix = '/api/leaderboard';
 
-async function routes(fastify) {
-    fastify.get('/live', async () => {
+async function routes(app) {
+    app.get('/live', () => {
         return {
             status: 'error',
             message: 'This feature is not yet implemented!'
