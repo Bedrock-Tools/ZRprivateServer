@@ -1,6 +1,3 @@
--- ZRprivateServer SQL Database
--- Version 1.0.0
-
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
@@ -16,7 +13,7 @@ CREATE TABLE IF NOT EXISTS `globals` (
 )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+COLLATE = utf8mb4_general_ci;
 
 --
 -- Table structure for table `users`
@@ -39,10 +36,10 @@ CREATE TABLE IF NOT EXISTS `users` (
 )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+COLLATE = utf8mb4_general_ci;
 
 --
--- Table structture for table `sessions`
+-- Table structure for table `sessions`
 --
 
 CREATE TABLE IF NOT EXISTS `sessions` (
@@ -52,7 +49,7 @@ CREATE TABLE IF NOT EXISTS `sessions` (
 )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+COLLATE = utf8mb4_general_ci;
 
 --
 -- Indexes for table `globals`
