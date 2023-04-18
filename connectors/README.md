@@ -2,7 +2,7 @@
 
 Connecting to a private server from the game requires following specific steps that may vary depending on your platform. This guide will provide you with simple and easy-to-follow instructions to get you connected.
 
-## Web (Chrome)
+## Web
 
 ### Using the zrps-connector.user.js Tampermonkey script
 
