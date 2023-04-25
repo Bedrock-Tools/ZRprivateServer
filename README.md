@@ -24,4 +24,4 @@ ZRprivateServer is released under the MIT license. See [LICENSE](https://github.
 
 ## Legal
 
-This an open-source project developed for educational and entertainment purposes only. We do not assume any liability for any loss or damage resulting from the use or misuse of the server, hosting it, or commercializing it, and we do not endorse any illegal or unethical activities associated with the server. Additionally, please note that the project has no intention of infringing on the intellectual property of the original game developers.
+This is an open-source project developed for educational and entertainment purposes only. We do not assume any liability for any loss or damage resulting from the use or misuse of the server, hosting it, or commercializing it, and we do not endorse any illegal or unethical activities associated with the server. Additionally, please note that the project has no intention of infringing on the intellectual property of the original game developers.
