@@ -350,7 +350,7 @@ io.on('connection', (socket) => {
 });
 
 // Start the server
-server.listen(parseInt(process.env.PORT || '3002'), () => {
+server.listen(parseInt(process.env.PORT || '3002'), process.env.HOST || 'localhost', () => {
     console.log('Server listening on port 3002');
 });
 
