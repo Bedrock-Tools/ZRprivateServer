@@ -7,37 +7,32 @@ import formbody from '@fastify/formbody';
 import view from '@fastify/view';
 import _static from '@fastify/static';
 import path, { dirname } from 'path';
+import * as dotenv from 'dotenv';
 import * as url from 'url';
-import toml from 'toml';
 import pug from 'pug';
 import fs from 'fs';
 
-// Load config and directory name
-const __dirname = dirname(url.fileURLToPath(import.meta.url));
-const configFile = fs.readFileSync('config.toml', 'utf8');
-const config = toml.parse(configFile);
+// Load environment config
+dotenv.config();
 
 // Create web server
 const app = fastify();
 
-// Decorate config
-app.decorate('opts', config);
-
 // Create MySQL pool connection
 app.register(mysql, {
     promise: true,
-    host: config.database.host,
-    port: config.database.port,
-    user: config.database.user,
-    password: config.database.password,
-    database: config.database.database_name
+    host: process.env.DATABASE_HOST || '127.0.0.1',
+    port: parseInt(process.env.DATABASE_PORT || '3306'),
+    user: process.env.DATABASE_USER || 'root',
+    password: process.env.DATABASE_PASSWORD,
+    database: process.env.DATABASE_NAME
 });
 
 // Register miscellaneous plugins
 app.register(cors);
 app.register(formbody);
 app.register(cookie, {
-    secret: config.server.cookie_secret || 'my-secret'
+    secret: process.env.COOKIE_SECRET || 'my-secret'
 });
 app.register(view, {
     engine: {
@@ -46,6 +41,7 @@ app.register(view, {
 });
 
 // Register routes
+const __dirname = dirname(url.fileURLToPath(import.meta.url));
 const routesPath = path.join(__dirname, 'routes');
 const routeFiles = fs.readdirSync(routesPath).filter(file => file.endsWith('.js'));
 for (const file of routeFiles) {
@@ -62,7 +58,7 @@ app.register(_static, {
 });
 
 // Start web server
-app.listen({ port: config.server.port || 3001 }, (err, address) => {
+app.listen({ port: parseInt(process.env.PORT || '3001') }, (err, address) => {
     if (err) throw err;
-    console.log(`[${config.server.name || 'ZRPS'}] API is now listening on ${address}`);
+    console.log(`[${process.env.SERVER_NAME || 'ZRPS'}] API is now listening on ${address}`);
 });

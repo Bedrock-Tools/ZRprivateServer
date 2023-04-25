@@ -1,0 +1,26 @@
+{
+  "name": "zrprivateserver-mason",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "JamzOhJamz",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "mysql2": "^3.2.3",
+    "socket.io": "2.3.0"
+  },
+  "devDependencies": {
+    "@types/socket.io": "^3.0.2",
+    "eslint": "^8.38.0",
+    "eslint-config-semistandard": "^17.0.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-n": "^15.7.0",
+    "eslint-plugin-promise": "^6.1.1"
+  }
+}

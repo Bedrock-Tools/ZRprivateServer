@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         ZRPS Connector (Browser)
-// @namespace    https://discord.gg/fcf3SH6sHJ
+// @namespace    https://discord.gg/SykMmta6cB
 // @version      1.0
 // @description  Connect to a Zombs Royale private server
 // @author       JamzOhJamz
@@ -143,20 +143,20 @@ window.onbeforescriptexecute = async (e) => {
             }
         };
         window.addEventListener('message', game.onWindowMessage.bind(game));
+        logoutUser = function () {
+            setCookie('userKeyZrps', '', 0);
+            request('/user/logout', function (t, i, n) {
+                if (t) {
+                    window.location = '/user/logout';
+                    return;
+                }
+                e.options.userData = null;
+            });
+        };
     }
 };
 
 document.addEventListener('DOMContentLoaded', function () {
-    // Workaround to stay logged in
-    function gameBypass(original_function) {
-        return function (options) {
-            console.log(options);
-            return original_function.apply(this, options);
-        };
-    }
-
-    Game.prototype.constructor = gameBypass(Game.prototype.constructor);
-
     // Hook API requests
     function openBypass(original_function) {
         return function (method, url, async) {
@@ -182,6 +182,18 @@ document.addEventListener('DOMContentLoaded', function () {
             return open.call(window, url, name, features);
         };
     }(window.open));
+
+    // Hook websocket for mason
+    const OriginalWebsocket = window.WebSocket;
+    const ProxiedWebSocket = function () {
+        const url = arguments[0];
+        if (url.includes('mason-ipv4.zombsroyale.io:443') || url.includes('mason.zombsroyale.io:443')) {
+            arguments[0] = arguments[0].replace('mason-ipv4.zombsroyale.io:443', '127.0.0.1:3002').replace('mason.zombsroyale.io:443', '127.0.0.1:3002').replace('wss://', 'ws://');
+        }
+        const ws = new OriginalWebsocket(...arguments);
+        return ws;
+    };
+    window.WebSocket = ProxiedWebSocket;
 }, false);
 
 async function getZrpsUserData(key) {

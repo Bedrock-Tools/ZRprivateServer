@@ -1,5 +1,5 @@
 {
-  "name": "zrprivateserver",
+  "name": "zrprivateserver-api",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -12,7 +12,7 @@
     "url": "git+https://github.com/JamzOhJamz/ZRprivateServer.git"
   },
   "author": "JamzOhJamz",
-  "license": "GNU",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/JamzOhJamz/ZRprivateServer/issues"
   },
@@ -25,11 +25,11 @@
     "@fastify/static": "^6.10.1",
     "@fastify/view": "^7.4.1",
     "bcryptjs": "^2.4.3",
+    "dotenv": "^16.0.3",
     "fastify": "^4.15.0",
     "hcaptcha": "^0.1.1",
     "node-fetch": "^3.3.1",
-    "pug": "^3.0.2",
-    "toml": "^3.0.0"
+    "pug": "^3.0.2"
   },
   "devDependencies": {
     "eslint": "^8.38.0",

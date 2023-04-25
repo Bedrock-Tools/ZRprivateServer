@@ -17,7 +17,7 @@ async function routes(app) {
         res.redirect('/user/login');
     });
     app.get('/user/login', (req, res) => {
-        res.view('views/login.pug', { serverName: app.opts.server.name, message: req.query.r === 's' ? 'Account created successfully. You may now login.' : undefined });
+        res.view('views/login.pug', { serverName: process.env.SERVER_NAME, message: req.query.r === 's' ? 'Account created successfully. You may now login.' : undefined });
     });
     app.post('/user/login', async (req, res) => {
         const csrf = req.unsignCookie(req.cookies.csrf);
@@ -53,7 +53,7 @@ async function routes(app) {
         return 'success';
     });
     app.get('/user/register', (_, res) => {
-        res.view('views/register.pug', { serverName: app.opts.server.name, hcaptchaSiteKey: app.opts.server.hcaptcha_site_key || defaultHcaptchaSiteKey });
+        res.view('views/register.pug', { serverName: process.env.SERVER_NAME, hcaptchaSiteKey: process.env.HCAPTCHA_SITE_KEY || defaultHcaptchaSiteKey });
     });
     app.post('/user/register', async (req, res) => {
         if (!req.body.username || !req.body.password || !req.body.password2) {
@@ -66,7 +66,7 @@ async function routes(app) {
         if (!hcaptchaResponse) {
             return 'Missing hCaptcha response.';
         }
-        const hcaptchaSecretKey = app.opts.server.hcaptcha_secret_key || defaultHcaptchaSecretKey;
+        const hcaptchaSecretKey = process.env.HCAPTCHA_SECRET_KEY || defaultHcaptchaSecretKey;
         const hcaptchaResult = await verify(hcaptchaSecretKey, req.body['h-captcha-response']);
         if (!hcaptchaResult.success) {
             return 'hCaptcha verification failed.';
