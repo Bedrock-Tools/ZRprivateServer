@@ -30,10 +30,12 @@ async function routes(app) {
         const db = await app.mysql.getConnection();
         const [rows] = await db.execute('SELECT * FROM users WHERE name = ? LIMIT 1', [req.body.username]);
         if (rows.length === 0) {
+            db.release();
             return 'Invalid username or password.';
         }
         const user = rows[0];
         if (!bcrypt.compareSync(req.body.password, user.password)) {
+            db.release();
             return 'Invalid username or password.';
         }
         const token = crypto.randomBytes(20).toString('hex');
