@@ -9,7 +9,7 @@ import { generatePartyKey, hashPlayerIp } from './utils.js';
 dotenv.config();
 
 // Create MySQL pool
-const pool = mysql.createPool({
+const mysqlOptions = {
     host: process.env.DATABASE_HOST || '127.0.0.1',
     port: parseInt(process.env.DATABASE_PORT || '3306'),
     user: process.env.DATABASE_USER || 'root',
@@ -17,7 +17,13 @@ const pool = mysql.createPool({
     database: process.env.DATABASE_NAME,
     waitForConnections: true,
     connectionLimit: 10
-});
+};
+if (process.env.DATABASE_SSL_REJECT_UNAUTHORIZED?.toLowerCase() === 'true') {
+    mysqlOptions.ssl = {
+        rejectUnauthorized: true
+    };
+}
+const pool = mysql.createPool(mysqlOptions);
 
 // Create an HTTP server
 const server = http.createServer();
