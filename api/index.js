@@ -19,17 +19,20 @@ dotenv.config();
 const app = fastify();
 
 // Create MySQL pool connection
-app.register(mysql, {
+const mysqlOptions = {
     promise: true,
     host: process.env.DATABASE_HOST || '127.0.0.1',
     port: parseInt(process.env.DATABASE_PORT || '3306'),
     user: process.env.DATABASE_USER || 'root',
     password: process.env.DATABASE_PASSWORD,
-    database: process.env.DATABASE_NAME,
-    ssl: {
+    database: process.env.DATABASE_NAME
+};
+if (process.env.DATABASE_SSL_REJECT_UNAUTHORIZED?.toLowerCase() === 'true') {
+    mysqlOptions.ssl = {
         rejectUnauthorized: true
-    }
-});
+    };
+}
+app.register(mysql, mysqlOptions);
 
 // Register miscellaneous plugins
 app.register(cors);
@@ -61,7 +64,7 @@ app.register(_static, {
 });
 
 // Start web server
-app.listen({ port: parseInt(process.env.PORT || '3001') }, (err, address) => {
+app.listen({ port: parseInt(process.env.PORT || '3001'), host: '0.0.0.0' }, (err, address) => {
     if (err) throw err;
     console.log(`[${process.env.SERVER_NAME || 'ZRPS'}] API is now listening on ${address}`);
 });
