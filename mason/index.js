@@ -351,7 +351,7 @@ io.on('connection', (socket) => {
 
 // Start the server
 server.listen(parseInt(process.env.PORT || '3002'), process.env.HOST || 'localhost', () => {
-    console.log('Server listening on port 3002');
+    console.log(`[${process.env.SERVER_NAME || 'ZRPS'}] Mason is now listening on port ${process.env.PORT || '3002'}`);
 });
 
 async function clearUserStatus(socketId) {
