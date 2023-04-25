@@ -18,8 +18,8 @@ async function routes(app) {
             };
         }
         const [userRows] = await db.execute('SELECT * FROM users WHERE id = ? AND friend_code = ?', [rows[0].user_id, req.params.friendCode]);
+        db.release();
         if (userRows.length === 0) {
-            db.release();
             return {
                 status: 'error',
                 message: 'No user exists with the specified friend code.'
