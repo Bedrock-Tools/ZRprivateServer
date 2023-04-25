@@ -105,6 +105,7 @@ const USE_HTTPS = false;
 })();
 
 let initScriptPatched = false;
+let useGw = null;
 
 window.onbeforescriptexecute = async (e) => {
     // You should check if textContent exists as this property is
@@ -120,8 +121,7 @@ window.onbeforescriptexecute = async (e) => {
         e.preventDefault();
         const fetchedUserData = await getZrpsUserData(getCookie('userKeyZrps'));
         let hasData = true;
-        if (fetchedUserData == null) hasData = false;
-        if (fetchedUserData.status != 'success') hasData = false;
+        if (fetchedUserData == null || fetchedUserData.status != 'success') hasData = false;
         const scriptElement = document.createElement('script');
         scriptElement.textContent = hasData ? originalScript.replace('userData: false', `userData: ${JSON.stringify(fetchedUserData.user)}`) : originalScript;
         document.body.appendChild(scriptElement);
@@ -153,6 +153,9 @@ window.onbeforescriptexecute = async (e) => {
                 e.options.userData = null;
             });
         };
+        const fetchedHealth = await getZrpsHealth();
+        if (fetchedHealth == null || fetchedHealth.status != 'success') return;
+        useGw = fetchedHealth.gateway;
     }
 };
 
@@ -187,8 +190,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const OriginalWebsocket = window.WebSocket;
     const ProxiedWebSocket = function () {
         const url = arguments[0];
-        if (url.includes('mason-ipv4.zombsroyale.io:443') || url.includes('mason.zombsroyale.io:443')) {
-            arguments[0] = arguments[0].replace('mason-ipv4.zombsroyale.io:443', '127.0.0.1:3002').replace('mason.zombsroyale.io:443', '127.0.0.1:3002').replace('wss://', 'ws://');
+        if (useGw && (url.includes('mason-ipv4.zombsroyale.io:443') || url.includes('mason.zombsroyale.io:443'))) {
+            arguments[0] = arguments[0].replace('mason-ipv4.zombsroyale.io:443', useGw.url).replace('mason.zombsroyale.io:443', useGw.url);
+            if (!useGw.useHttps) arguments[0] = arguments[0].replace('wss://', 'ws://');
         }
         const ws = new OriginalWebsocket(...arguments);
         return ws;
@@ -199,6 +203,19 @@ document.addEventListener('DOMContentLoaded', function () {
 async function getZrpsUserData(key) {
     try {
         const response = await fetch(`${USE_HTTPS ? 'https://' : 'http://'}${SERVER_ENDPOINT}/api/user/${key}`);
+        if (!response.ok) {
+            return null;
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        return null;
+    }
+}
+
+async function getZrpsHealth() {
+    try {
+        const response = await fetch(`${USE_HTTPS ? 'https://' : 'http://'}${SERVER_ENDPOINT}/api`);
         if (!response.ok) {
             return null;
         }

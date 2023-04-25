@@ -286,6 +286,23 @@ io.on('connection', (socket) => {
         socket.emit('partyData', parties[partyKey]);
     });
 
+    socket.on('leaveParty', () => {
+        const partyKey = players[socket.id].partyKey;
+        if (partyKey) {
+            const party = parties[partyKey];
+            if (party && party.players) {
+                const index = party.players.findIndex(player => player.id === socket.id);
+                if (index !== -1) {
+                    party.players.splice(index, 1);
+                    if (party.players.length === 0) {
+                        delete parties[partyKey];
+                    }
+                    socket.emit('partyLeft');
+                }
+            }
+        }
+    });
+
     socket.on('login', async (userKey) => {
         // Close socket, likely spamming
         if (players[socket.id].loginState === 1) return socket.disconnect(true);
