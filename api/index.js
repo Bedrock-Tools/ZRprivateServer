@@ -25,7 +25,10 @@ app.register(mysql, {
     port: parseInt(process.env.DATABASE_PORT || '3306'),
     user: process.env.DATABASE_USER || 'root',
     password: process.env.DATABASE_PASSWORD,
-    database: process.env.DATABASE_NAME
+    database: process.env.DATABASE_NAME,
+    ssl: {
+        rejectUnauthorized: true
+    }
 });
 
 // Register miscellaneous plugins
