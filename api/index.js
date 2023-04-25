@@ -64,7 +64,7 @@ app.register(_static, {
 });
 
 // Start web server
-app.listen({ port: parseInt(process.env.PORT || '3001'), host: '0.0.0.0' }, (err, address) => {
+app.listen({ port: parseInt(process.env.PORT || '3001'), host: process.env.HOST || 'localhost' }, (err, address) => {
     if (err) throw err;
     console.log(`[${process.env.SERVER_NAME || 'ZRPS'}] API is now listening on ${address}`);
 });
