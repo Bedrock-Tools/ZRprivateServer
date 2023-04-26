@@ -35,6 +35,7 @@ if (process.env.DATABASE_SSL_REJECT_UNAUTHORIZED?.toLowerCase() === 'true') {
 app.register(mysql, mysqlOptions);
 
 // Register miscellaneous plugins
+app.addContentTypeParser('*', (_req, _payload, done) => done(null));
 app.register(cors);
 app.register(formbody);
 app.register(cookie, {

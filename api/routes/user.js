@@ -319,6 +319,20 @@ async function routes(app) {
         };
         return response;
     });
+    app.post('/api/user/:userKey/clear-sessions', async (req) => {
+        const db = await app.mysql.getConnection();
+        const [rows] = await db.execute('SELECT user_id FROM sessions WHERE `key` = ?', [req.params.userKey]);
+        if (rows.length === 0) {
+            db.release();
+            return {
+                status: 'error',
+                message: 'No such user exists.'
+            };
+        }
+        await db.execute('DELETE FROM sessions WHERE user_id = ?', [rows[0].user_id]);
+        db.release();
+        return { status: 'success' };
+    });
 }
 
 export default routes;
