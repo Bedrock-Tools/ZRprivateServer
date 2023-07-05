@@ -20,7 +20,7 @@ If you need any help, you can reach out to the community on the [Discord server]
 
 ## License
 
-ZRprivateServer is released under the MIT license. See [LICENSE](https://github.com/JamzOhJamzZRprivateServer/LICENSE) for more details.
+ZRprivateServer is released under the MIT license. See [LICENSE](https://github.com/JamzOhJamz/ZRprivateServer/blob/main/LICENSE) for more details.
 
 ## Legal
 
