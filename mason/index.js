@@ -67,7 +67,7 @@ io.on('connection', (socket) => {
         if (!status) return socket.disconnect(true);
         if (typeof status !== 'string') return socket.disconnect(true);
         if (players[socket.id].loginState !== 2) return;
-        if (!['online', 'offline', 'ingame'].includes(status)) return;
+        if (!['online', 'ingame'].includes(status)) return;
         const userId = players[socket.id].userData.id;
         const friendCode = players[socket.id].userData.friend_code;
         const connection = await pool.getConnection();
@@ -284,6 +284,62 @@ io.on('connection', (socket) => {
         };
         players[socket.id].partyKey = partyKey;
         socket.emit('partyData', parties[partyKey]);
+    });
+
+    socket.on('setPartyVersion', (version) => {
+        if (!version) return socket.disconnect(true);
+        if (typeof version !== 'string') return socket.disconnect(true);
+        const partyKey = players[socket.id].partyKey;
+        if (!partyKey) return;
+        const party = parties[partyKey];
+        if (!party) return;
+        const partyPlayer = party.players.find(player => player.id === socket.id);
+        if (!partyPlayer?.leader) return;
+        party.version = version;
+        socket.emit('partyVersionUpdated', version);
+    });
+
+    socket.on('setPartyGameMode', (gameMode) => {
+        if (!gameMode) return socket.disconnect(true);
+        if (typeof gameMode !== 'string') return socket.disconnect(true);
+        const partyKey = players[socket.id].partyKey;
+        if (!partyKey) return;
+        const party = parties[partyKey];
+        if (!party) return;
+        const partyPlayer = party.players.find(player => player.id === socket.id);
+        if (!partyPlayer?.leader) return;
+        party.gameMode = gameMode;
+        socket.emit('partyGameModeUpdated', gameMode);
+    });
+
+    socket.on('setPartyRegion', (region) => {
+        if (!region) return socket.disconnect(true);
+        if (typeof region !== 'string') return socket.disconnect(true);
+        const partyKey = players[socket.id].partyKey;
+        if (!partyKey) return;
+        const party = parties[partyKey];
+        if (!party) return;
+        const partyPlayer = party.players.find(player => player.id === socket.id);
+        if (!partyPlayer?.leader) return;
+        party.region = region;
+        socket.emit('partyRegionUpdated', region);
+    });
+
+    socket.on('setPartyAutofill', (autofill) => {
+        if (autofill === undefined || autofill === null) return socket.disconnect(true);
+        if (typeof autofill !== 'boolean') return socket.disconnect(true);
+        const partyKey = players[socket.id].partyKey;
+        if (!partyKey) return;
+        const party = parties[partyKey];
+        if (!party) return;
+        const partyPlayer = party.players.find(player => player.id === socket.id);
+        if (!partyPlayer?.leader) return;
+        party.autofill = autofill;
+        socket.emit('partyAutofillUpdated', autofill);
+    });
+
+    socket.on('setReady', (_isReady) => {
+        console.log(_isReady);
     });
 
     socket.on('leaveParty', () => {

@@ -1,4 +1,4 @@
-export const prefix = '/tournament';
+export const prefix = '/api/tournament';
 
 async function routes(app) {
     app.get('/:tournamentCode/join', () => {
