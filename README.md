@@ -16,7 +16,7 @@ ZRprivateServer is an open-source project and we welcome contributions from anyo
 
 ## Support
 
-If you need any help, you can reach out to the community on the [Discord server](https://discord.gg/SykMmta6cB) or open an issue in the GitHub repository.
+If you need any help, you can reach out to the community on the [Discord server](https://discord.gg/btGEvyyd) or open an issue in the GitHub repository.
 
 ## License
 
